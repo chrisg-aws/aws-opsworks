@@ -1,38 +1,20 @@
 #
-# Cookbook Name:: jboss
+# Cookbook Name:: wildfly-cookbook
 # Recipe:: users
+# Author:: Sascha Moellering (sascha.moellering@gmail.com)
+# Copyright 2013
 #
-# Copyright 2009-2011, Opscode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-#     http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# license Apache v2.0
 #
 
-include_recipe "sudo"
-
-jboss_user = "jboss"
-
-users_manage_noid jboss_user do
-  action [ :remove, :create ]
+group "jboss" do
+  gid 1011
 end
 
-
-# add sudoers
-sudo jboss_user do
-  template "app.erb"
-  variables(
-            {
-              "name" => jboss_user,
-              "service" => jboss_user
-            }
-            )
+user "jboss" do
+  comment "runtime user jboss"
+  uid 1011
+  gid "jboss"
+  home "/home/jboss"
+  supports :manage_home => true
 end
